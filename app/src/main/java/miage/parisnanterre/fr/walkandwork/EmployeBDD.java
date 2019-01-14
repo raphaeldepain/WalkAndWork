@@ -6,7 +6,7 @@ import android.content.ContentValues;
         import android.database.sqlite.SQLiteDatabase;
 
 public class EmployeBDD {
-
+//TEST
     private static final int VERSION_BDD = 1;
     private static final String NOM_BDD = "waw.db";
 
