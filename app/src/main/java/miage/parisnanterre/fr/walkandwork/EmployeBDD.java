@@ -9,7 +9,6 @@ public class EmployeBDD {
 //TEST
     private static final int VERSION_BDD = 1;
     private static final String NOM_BDD = "waw.db";
-
     private static final String TABLE_EMPLOYEUR = "table_employeur";
     private static final String COL_ID = "ID";
     private static final int NUM_COL_ID = 0;

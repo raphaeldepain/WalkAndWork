@@ -2,64 +2,76 @@ package miage.parisnanterre.fr.walkandwork;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * Activité principale
+ * Il s'agit de l'activité qui affiche la liste d'employeur en faisant appelle à une BDD.
+ */
 public class MainActivity extends AppCompatActivity {
+
+    private static final String TAG = "MainActivity";
+
+    private List<String> imageNames = new ArrayList<>(); // La liste des titres des images
+    private List<String> imageURL = new ArrayList<>(); // La liste des URL des images
+    private List<Employeur> employeur = new ArrayList<>(); // La liste d'employeur créés
+    EmployeBDD employeurBdd = new EmployeBDD(this); // La création de la BDD interne au smartphone (SQLite)
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Création d'une instance de ma classe employeursBDD
-        EmployeBDD employeurBdd = new EmployeBDD(this);
-
-        //Création d'un employeur
-        Employeur employeur = new Employeur("DEPAIN","Raphael","AVIVA","Cherche jeune diplômé Miage");
+        employeur.add( new Employeur("DEPAIN","Raphael","SOCIETE GENERALE","Cherche jeune diplômé Miage"));
+        employeur.add( new Employeur("AMRANI","Said","AXA","Cherche jeune diplômé Info"));
+        employeur.add( new Employeur("ASLIMI","Soukaina","AIRFRANCE","Cherche jeune diplômé Miage"));
 
         //On ouvre la base de données pour écrire dedans
         employeurBdd.open();
-        //On insère le employeur que l'on vient de créer
-        employeurBdd.insertEmployeur(employeur);
+        //On insère dans la BDD les employeurs que l'on vient de créer
+        employeurBdd.insertEmployeur(employeur.get(0));
+        employeurBdd.insertEmployeur(employeur.get(1));
+        employeurBdd.insertEmployeur(employeur.get(2));
+        //On ferme la connexion à la BDD
+        employeurBdd.close();
+        initImageBitmap();
+        
+    }
 
-        //Pour vérifier que l'on a bien créé notre employeur dans la BDD
-        //on extrait le employeur de la BDD grâce au titre du employeur que l'on a créé précédemment
-        Employeur employeurFromBdd = employeurBdd.getEmployeurWithTitre(employeur.getName());
-        //Si un employeur est retourné (donc si le employeur à bien été ajouté à la BDD)
-        if(employeurFromBdd != null){
-            //On affiche les infos du employeur dans un Toast
-            Toast.makeText(this, employeurFromBdd.toString(), Toast.LENGTH_LONG).show();
-            //On modifie le titre du employeur
-            employeurFromBdd.setName("J'ai modifié le nom de l'employeur");
-            //Puis on met à jour la BDD
-            employeurBdd.updateEmployeur(employeurFromBdd.getId(), employeurFromBdd);
-        }
+    /**
+     * Méthode pour préparer les ressources nécessaires à la création de la liste d'employeurs
+     *
+     */
+    public void initImageBitmap(){
+        Log.d(TAG, "initImageBitmap: preparing bitmaps.");
+        employeurBdd.open();
+        imageURL.add("https://pbs.twimg.com/profile_images/707182241403822080/IKaXM_ps_400x400.jpg");
+        imageNames.add(employeurBdd.getEmployeurWithTitre("DEPAIN").getCompagny());
 
-        //On extrait le employeur de la BDD grâce au nouveau nom
-        employeurFromBdd = employeurBdd.getEmployeurWithTitre("J'ai modifié le nom de l'employeur");
-        //S'il existe un employeur possédant ce titre dans la BDD
-        if(employeurFromBdd != null){
-            //On affiche les nouvelles informations du employeur pour vérifier que le titre du employeur a bien été mis à jour
-            Toast.makeText(this, employeurFromBdd.toString(), Toast.LENGTH_LONG).show();
-            //on supprime le employeur de la BDD grâce à son ID
-            employeurBdd.removeEmployeurWithID(employeurFromBdd.getId());
-        }
+        imageURL.add("https://is4-ssl.mzstatic.com/image/thumb/Purple128/v4/cc/99/0b/cc990b90-65ee-8924-b3ef-3552af684d76/AppIcon-0-1x_U007emarketing-0-0-GLES2_U002c0-512MB-sRGB-0-0-0-85-220-0-0-0-7.png/246x0w.jpg");
+        imageNames.add(employeurBdd.getEmployeurWithTitre("AMRANI").getCompagny());
 
-        //On essaye d'extraire de nouveau le employeur de la BDD toujours grâce à son nouveau titre
-        employeurFromBdd = employeurBdd.getEmployeurWithTitre("J'ai modifié le nom de l'employeur");
-        //Si aucun employeur n'est retourné
-        if(employeurFromBdd == null){
-            //On affiche un message indiquant que le employeur n'existe pas dans la BDD
-            Toast.makeText(this, "Cet employeur n'existe pas dans la BDD", Toast.LENGTH_LONG).show();
-        }
-        //Si le employeur existe (mais normalement il ne devrait pas)
-        else{
-            //on affiche un message indiquant que le employeur existe dans la BDD
-            Toast.makeText(this, "Cet employeur existe dans la BDD", Toast.LENGTH_LONG).show();
-        }
+        imageURL.add("https://pbs.twimg.com/profile_images/1013705098663428096/HG670mrU.jpg");
+        imageNames.add(employeurBdd.getEmployeurWithTitre("ASLIMI").getCompagny());
 
         employeurBdd.close();
-        
-        
+        initRecyclerView();
+    }
+
+    /**
+     * Méthode pour afficher la liste d'employeur sous la forme d'un recycler View et à l'aide d'un Adapter.
+     */
+    private void initRecyclerView(){
+        Log.d(TAG, "initRecyclerView: init recyclerview.");
+        RecyclerView recyclerView = findViewById(R.id.recyclerViewEmployeur);
+        RecyclerViewEmployeurAdapter adapter = new RecyclerViewEmployeurAdapter(imageNames,imageURL,this);
+        recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
 }
