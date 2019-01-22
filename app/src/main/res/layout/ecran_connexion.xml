@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+android:layout_width="match_parent"
+android:layout_height="match_parent"
+android:paddingLeft="16dp"
+android:paddingRight="16dp"
+android:orientation="vertical" >
+<TextView
+    android:id="@+id/textSexe"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:textSize="40sp"
+    android:textColor="@color/colorPrimaryDark"
+    android:text="connexion" />
+
+<EditText
+    android:id="@+id/edittext1"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/button"
+    android:layout_below="@+id/textView1"
+    android:layout_marginTop="61dp"
+    android:ems="10"
+    android:hint="email"
+    android:inputType="text" />
+<EditText
+    android:id="@+id/edittext2"
+    android:layout_width="fill_parent"
+    android:layout_height="wrap_content"
+    android:layout_alignLeft="@+id/button"
+    android:layout_below="@+id/textView1"
+    android:layout_marginTop="61dp"
+    android:ems="10"
+    android:hint="mot de passe"
+    android:inputType="textPassword" />
+    <Button
+    android:id="@+id/bconnexion"
+    android:layout_width="fill_parent"
+    android:layout_height="30dp"
+    android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+    android:textColor="@color/textcouleur"
+    android:background="@color/bocouleur"
+    android:text="connexion" />
+    <Button
+        android:id="@+id/boffre"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/textcouleur"
+        android:background="@color/bocouleur"
+        android:text="voir les offre" />
+
+
+</LinearLayout>
