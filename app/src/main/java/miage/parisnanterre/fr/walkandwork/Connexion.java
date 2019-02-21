@@ -3,19 +3,23 @@ package miage.parisnanterre.fr.walkandwork;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
+import java.sql.Connection;
 
 public class Connexion extends AppCompatActivity {
 
-    private static final String user = "id8654764_user";
-    private static final String pass = "nanterre";
-    private static final String url = "";
-    private static Connexion connexionDB;
+    private static final String user = "root";
+    private static final String pass = "";
+    private static final String url = "jdbc:mysql://127.0.0.1:3306/jee";
+    private static String name = "DEPAIN";
+    private static Connection connexionDB;
 
 
     @Override
@@ -36,15 +40,21 @@ public class Connexion extends AppCompatActivity {
             public void onClick(View view) {
 
                 try {
-                    connexionDB = (Connexion) DriverManager.getConnection(url,user,pass);
-
+                  //  Toast.makeText(getApplicationContext(),"AVANT CONNEXION",Toast.LENGTH_SHORT).show();
+                    connexionDB = DriverManager.getConnection(url,user,pass);
+                    Toast.makeText(getApplicationContext(),connexionDB.getCatalog(),Toast.LENGTH_SHORT).show();
                     // REQUETE SQL
+                    String sqlid = "INSERT INTO contact (last_name) VALUES ("+name+");";
+                    Statement st = connexionDB.createStatement();
+                   // st.executeUpdate(sqlid);
+                    Toast.makeText(getApplicationContext(),st.executeUpdate(sqlid),Toast.LENGTH_SHORT).show();
 
                 } catch (SQLException e) {
                     e.printStackTrace();
+                    Toast.makeText(getApplicationContext(),e.getMessage(),Toast.LENGTH_SHORT).show();
                 }
-                Intent intent1 = new Intent(Connexion.this, MainActivity.class);
-                startActivity(intent1);
+             //   Intent intent1 = new Intent(Connexion.this, MainActivity.class);
+            //  startActivity(intent1);
             }
         });
     }
