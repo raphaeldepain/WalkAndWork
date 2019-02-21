@@ -28,7 +28,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
 
 public class Connexion extends AppCompatActivity {
-    
+
     //private FusedLocationProviderClient client;
     private FusedLocationProviderClient GPSLocationClient;
     private String MY_PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION;
