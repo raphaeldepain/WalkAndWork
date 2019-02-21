@@ -15,7 +15,7 @@ public class HttpQuery {
 
     private OkHttpClient client = new OkHttpClient();
 
-    private String ENDPOINT = "http://10.0.2.2/phpwaw/WaW-connexion.php";
+    private String ENDPOINT = "https://walkandwork.000webhostapp.com/WaW-connexion.php";
 
     public HttpQuery(){
 
