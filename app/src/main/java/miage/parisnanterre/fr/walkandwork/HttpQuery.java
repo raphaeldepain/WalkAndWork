@@ -1,10 +1,7 @@
 package miage.parisnanterre.fr.walkandwork;
 
-import android.content.Context;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
-import android.util.Log;
-import android.widget.Toast;
 
 import java.io.IOException;
 
@@ -20,7 +17,7 @@ public class HttpQuery {
 
     private String ENDPOINT = "https://walkandwork.000webhostapp.com/WaW-connexion.php";
 
-    public HttpQuery() {
+    public HttpQuery(){
 
     }
 
@@ -45,26 +42,24 @@ public class HttpQuery {
         }
     }
 
-    public String gettheUsers(String ur,String id1, String id2) throws IOException {
-       // Double id1 = Double.valueOf(id1);
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public String UpdatePosition(String url, String id, String longitude, String latitude) throws IOException {
 
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
-                .addFormDataPart("action", ur)
-
-                .addFormDataPart("id1", id1)
-                .addFormDataPart("id2", id2)
+                .addFormDataPart("action", url)
+                .addFormDataPart("id", id)
+                .addFormDataPart("longitude", longitude)
+                .addFormDataPart("latitude", latitude)
                 .build();
 
-        //Log.("la variable est",requestBody);
         Request request = new Request.Builder()
                 .url(ENDPOINT)
                 .post(requestBody)
                 .build();
 
-           try (Response response = client.newCall(request).execute()) {
-                return response.body().string();
-            }
-
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
     }
 }
