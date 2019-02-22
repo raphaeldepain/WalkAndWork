@@ -53,7 +53,16 @@ android:orientation="vertical" >
         android:layout_marginBottom="10dp"
         android:textColor="@color/textcouleur"
         android:background="@color/bocouleur"
-        android:text="voir les offre" />
+        android:text="c'est quoi ce bordel les offre" />
 
-
+    <Button
+        android:id="@+id/geolocation"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:textColor="@color/textcouleur"
+        android:background="@color/bocouleur"
+        android:text="recuperer ma geolocation" />
 </LinearLayout>
