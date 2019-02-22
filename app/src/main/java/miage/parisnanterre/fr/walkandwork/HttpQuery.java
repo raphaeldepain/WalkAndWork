@@ -41,4 +41,25 @@ public class HttpQuery {
             return response.body().string();
         }
     }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public String UpdatePosition(String url, String id, String longitude, String latitude) throws IOException {
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("action", url)
+                .addFormDataPart("id", id)
+                .addFormDataPart("longitude", longitude)
+                .addFormDataPart("latitude", latitude)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(ENDPOINT)
+                .post(requestBody)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
 }

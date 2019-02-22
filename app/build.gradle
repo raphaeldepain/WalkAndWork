@@ -40,4 +40,6 @@ dependencies {
     implementation 'com.squareup.picasso:picasso:2.5.2'
     //HTTP CONNEXION
     implementation 'com.squareup.okhttp3:okhttp:3.5.0'
+
+    
 }
