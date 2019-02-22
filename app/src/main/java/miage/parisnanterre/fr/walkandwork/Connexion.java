@@ -23,7 +23,6 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import static android.Manifest.permission.ACCESS_FINE_LOCATION;
@@ -53,7 +52,7 @@ public class Connexion extends AppCompatActivity {
         connexion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent1 = new Intent(Connexion.this, MapsActivity.class);
+                Intent intent1 = new Intent(Connexion.this, MainActivity.class);
                 startActivity(intent1);
             }
         });
@@ -146,8 +145,6 @@ public class Connexion extends AppCompatActivity {
 
             Toast toast = Toast.makeText(context, text, duration);
             toast.show();
-
-
           //  tv.setText("Lat : "+loc.getLatitude()+" / Long : "+loc.getLongitude()+" (Provider: "+loc.getProvider()+")");
             if(msg!=null) {
                 Toast.makeText(Connexion.this, msg, Toast.LENGTH_LONG).show();

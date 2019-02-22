@@ -16,6 +16,7 @@ android {
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
     }
+    buildToolsVersion '28.0.3'
 }
 
 dependencies {
@@ -38,8 +39,8 @@ dependencies {
     implementation project(':linkedin-sdk')
     //Picasso
     implementation 'com.squareup.picasso:picasso:2.5.2'
-    //HTTP CONNEXION
+    //Position
+    implementation 'com.google.android.gms:play-services:11.0.1'
+    //Mysql Database
     implementation 'com.squareup.okhttp3:okhttp:3.5.0'
-
-    
 }
