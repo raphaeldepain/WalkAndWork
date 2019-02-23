@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">WalkAndWork</string>
     <string name="title_activity_inscription">InscriptionActivity</string>
+    <string name="title_activity_maps">My position</string>
 </resources>

@@ -1,21 +1,12 @@
 package miage.parisnanterre.fr.walkandwork;
 
-import android.Manifest;
+import android.*;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -23,66 +14,82 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
 
-import static android.Manifest.permission.ACCESS_FINE_LOCATION;
+public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
-public class Connexion extends AppCompatActivity {
-
-    //private FusedLocationProviderClient client;
+    private GoogleMap mMap;
+    // ici l'ajout
     private FusedLocationProviderClient GPSLocationClient;
-    private String MY_PERMISSION = Manifest.permission.ACCESS_FINE_LOCATION;
+    private String MY_PERMISSION = android.Manifest.permission.ACCESS_FINE_LOCATION;
     private boolean isGPSUpdating=false;
     private LocationCallback GPSLocationCallback;
-
-   // final static int REQUEST_CODE_GPS_LAST_LOCATION=4;
-    //final static int REQUEST_CODE_GPS_GET_LOCATION=5;
     final static int REQUEST_CODE_GPS_UPDATE_LOCATION=6;
-
-
-
+    public Coordonnees Mapostion;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.ecran_connexion);
-
-        final Button connexion = (Button) findViewById(R.id.boffre);
-         TextView tv =(TextView) findViewById(R.id.textSexe);
-          Button buttonUpdateGps = findViewById(R.id.geolocation);
-        connexion.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent1 = new Intent(Connexion.this, MapsActivity.class);
-                startActivity(intent1);
-            }
-        });
+        setContentView(R.layout.activity_maps);
+        Mapostion = new Coordonnees(30,30);
 
         GPSLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        buttonUpdateGps.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                GPSUpdateLocation();
-            }
-        });
+        //GPSUpdateLocation();
+
+
+
+        Toast.makeText(MapsActivity.this,String.valueOf(Mapostion.getLatitude()), Toast.LENGTH_LONG).show();
+
+
+        // Obtain the SupportMapFragment and get notified when the map is ready to be used.
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
+                .findFragmentById(R.id.map);
+
+       mapFragment.getMapAsync(this);
     }
 
-//=================================== FIN OnCreate============================
 
+    /**
+     * Manipulates the map once available.
+     * This callback is triggered when the map is ready to be used.
+     * This is where we can add markers or lines, add listeners or move the camera. In this case,
+     * we just add a marker near Sydney, Australia.
+     * If Google Play services is not installed on the device, the user will be prompted to install
+     * it inside the SupportMapFragment. This method will only be triggered once the user has
+     * installed Google Play services and returned to the app.
+     */
+    @Override
+    public void onMapReady(GoogleMap googleMap) {
+
+        mMap = googleMap;
+      //  Toast.makeText(MapsActivity.this, "avant la fonction.", Toast.LENGTH_LONG).show();
+
+      //  Toast.makeText(MapsActivity.this, "apres  la fonction.", Toast.LENGTH_LONG).show();
+        // Add a marker in Sydney and move the camera
+        LatLng paris = new LatLng(48.866667,2.333333 );
+        mMap.addMarker(new MarkerOptions().position(paris).title("la position de paris"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(paris));
+        mMap.animateCamera( CameraUpdateFactory.zoomTo( 12.0f ) );
+        /*LatLng ydney = new LatLng(-35, 151);
+        mMap.addMarker(new MarkerOptions().position(ydney).title("Marker in Sydney"));
+        mMap.moveCamera(CameraUpdateFactory.newLatLng(ydney));*/
+       // mMap.animateCamera( CameraUpdateFactory.zoomTo( 12.0f ) );
+        //Toast.makeText(MapsActivity.this, "à la fin de onMapready", Toast.LENGTH_LONG).show();
+    }
 
     public void GPSUpdateLocation(){
         if(isGPSUpdating) {
             GPSUpdateLocationStop();
         } else {
 
-            if (ActivityCompat.checkSelfPermission(Connexion.this, MY_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
-/*                if(ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,MY_PERMISSION)) {
-                    Toast.makeText(MainActivity.this, "Permission nécessaire avait déjà été refusée.", Toast.LENGTH_LONG).show();
-                } else {
-*/
-                Toast.makeText(Connexion.this, "Demande de permission lancée.", Toast.LENGTH_LONG).show();
+            if (ActivityCompat.checkSelfPermission(MapsActivity.this, MY_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
+             Toast.makeText(MapsActivity.this, "Demande de permission lancée.", Toast.LENGTH_LONG).show();
                 ActivityCompat.requestPermissions(
-                        Connexion.this,
+                        MapsActivity.this,
                         new String[]{MY_PERMISSION},
                         REQUEST_CODE_GPS_UPDATE_LOCATION);
 //                }
@@ -91,6 +98,9 @@ public class Connexion extends AppCompatActivity {
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
                         publishLocation(locationResult.getLastLocation(), "Nb locs : "+locationResult.getLocations().size());
+
+                        Mapostion.setLatitude(locationResult.getLastLocation().getLatitude());
+                        Mapostion.setLongitude(locationResult.getLastLocation().getLongitude());
                     }
                 };
 
@@ -106,7 +116,7 @@ public class Connexion extends AppCompatActivity {
                         null /* Looper */);
 
                 isGPSUpdating=true;
-               // buttonUpdateGps.setText("Stop");
+                // buttonUpdateGps.setText("Stop");
             }
         }
     }
@@ -115,7 +125,7 @@ public class Connexion extends AppCompatActivity {
 
     public void GPSUpdateLocationStop(){
         isGPSUpdating=false;
-       // btnGPSUpdateLocation.setText("Suis moi.");
+        // btnGPSUpdateLocation.setText("Suis moi.");
         if(GPSLocationClient!=null ) {
             if(GPSLocationCallback!=null) {
                 GPSLocationClient.removeLocationUpdates(GPSLocationCallback);
@@ -124,7 +134,7 @@ public class Connexion extends AppCompatActivity {
         }
     }
 
-//===================================================================================
+    //===================================================================================
     protected void onPause() {
         super.onPause();
         GPSUpdateLocationStop();
@@ -148,9 +158,9 @@ public class Connexion extends AppCompatActivity {
             toast.show();
 
 
-          //  tv.setText("Lat : "+loc.getLatitude()+" / Long : "+loc.getLongitude()+" (Provider: "+loc.getProvider()+")");
+            //  tv.setText("Lat : "+loc.getLatitude()+" / Long : "+loc.getLongitude()+" (Provider: "+loc.getProvider()+")");
             if(msg!=null) {
-                Toast.makeText(Connexion.this, msg, Toast.LENGTH_LONG).show();
+                Toast.makeText(MapsActivity.this, msg, Toast.LENGTH_LONG).show();
             }
         }
         return loc;
@@ -172,10 +182,12 @@ public class Connexion extends AppCompatActivity {
 
             }
         } else {
-            Toast.makeText(Connexion.this, "Permission refusée.", Toast.LENGTH_LONG).show();
+            Toast.makeText(MapsActivity.this, "Permission refusée.", Toast.LENGTH_LONG).show();
         }
     }
 
     //=======================================================================
 
 }
+
+
