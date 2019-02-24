@@ -1,12 +1,15 @@
 package miage.parisnanterre.fr.walkandwork;
 
 import android.*;
+import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -18,7 +21,9 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -31,6 +36,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private LocationCallback GPSLocationCallback;
     final static int REQUEST_CODE_GPS_UPDATE_LOCATION=6;
     public Coordonnees Mapostion;
+    private GoogleMap mGoogleMap;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,7 +45,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         Mapostion = new Coordonnees(30,30);
 
         GPSLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        //GPSUpdateLocation();
+        GPSUpdateLocation();
 
 
 
@@ -65,21 +72,39 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     @Override
     public void onMapReady(GoogleMap googleMap) {
 
-        mMap = googleMap;
-      //  Toast.makeText(MapsActivity.this, "avant la fonction.", Toast.LENGTH_LONG).show();
+      //  mMap = googleMap;
 
-      //  Toast.makeText(MapsActivity.this, "apres  la fonction.", Toast.LENGTH_LONG).show();
-        // Add a marker in Sydney and move the camera
-        LatLng paris = new LatLng(48.866667,2.333333 );
-        mMap.addMarker(new MarkerOptions().position(paris).title("la position de paris"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(paris));
-        mMap.animateCamera( CameraUpdateFactory.zoomTo( 12.0f ) );
-        /*LatLng ydney = new LatLng(-35, 151);
-        mMap.addMarker(new MarkerOptions().position(ydney).title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(ydney));*/
-       // mMap.animateCamera( CameraUpdateFactory.zoomTo( 12.0f ) );
-        //Toast.makeText(MapsActivity.this, "à la fin de onMapready", Toast.LENGTH_LONG).show();
+
+        mGoogleMap=googleMap;
+
+       // mGoogleMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+       // mGoogleMap.animateCamera( CameraUpdateFactory.zoomTo( 12.0f ));
+        //Initialize Google Play Services
+        if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ContextCompat.checkSelfPermission(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)
+                    == PackageManager.PERMISSION_GRANTED) {
+                //Location Permission already granted
+              //  buildGoogleApiClient();
+               // mGoogleMap.setMyLocationEnabled(true);
+            } else {
+                //Request Location Permission
+               // checkLocationPermission();
+            }
+        }
+        else {
+          //  buildGoogleApiClient();
+           /// mGoogleMap.setMyLocationEnabled(true);
+        }
+
+
+       // LatLng paris = new LatLng(48.866667,2.333333 );
+       // mMap.addMarker(new MarkerOptions().position(paris).title("la position de paris"));
+       // mMap.moveCamera(CameraUpdateFactory.newLatLng(paris));
+        mGoogleMap.animateCamera( CameraUpdateFactory.zoomTo( 4.0f ) );
+
     }
+
 
     public void GPSUpdateLocation(){
         if(isGPSUpdating) {
@@ -87,7 +112,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         } else {
 
             if (ActivityCompat.checkSelfPermission(MapsActivity.this, MY_PERMISSION) != PackageManager.PERMISSION_GRANTED) {
-             Toast.makeText(MapsActivity.this, "Demande de permission lancée.", Toast.LENGTH_LONG).show();
+/*                if(ActivityCompat.shouldShowRequestPermissionRationale(MainActivity.this,MY_PERMISSION)) {
+                    Toast.makeText(MainActivity.this, "Permission nécessaire avait déjà été refusée.", Toast.LENGTH_LONG).show();
+                } else {
+*/
+                Toast.makeText(MapsActivity.this, "Demande de permission lancée.", Toast.LENGTH_LONG).show();
                 ActivityCompat.requestPermissions(
                         MapsActivity.this,
                         new String[]{MY_PERMISSION},
@@ -98,9 +127,17 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
                         publishLocation(locationResult.getLastLocation(), "Nb locs : "+locationResult.getLocations().size());
+                        LatLng latLng = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        markerOptions.position(latLng);
+                        markerOptions.title("Current Position");
 
-                        Mapostion.setLatitude(locationResult.getLastLocation().getLatitude());
-                        Mapostion.setLongitude(locationResult.getLastLocation().getLongitude());
+
+                       // markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+                        Marker mCurrLocation = mGoogleMap.addMarker(markerOptions);
+                       // GoogleMap googleMap;
+                        mGoogleMap.animateCamera( CameraUpdateFactory.zoomTo( 12.0f ) );
+
                     }
                 };
 
@@ -186,7 +223,6 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         }
     }
 
-    //=======================================================================
 
 }
 
