@@ -10,6 +10,7 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
+import android.util.Log;
 import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -25,6 +26,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+
+import java.util.Arrays;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -47,11 +50,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         GPSLocationClient = LocationServices.getFusedLocationProviderClient(this);
         GPSUpdateLocation();
 
+        float[] results = new float[3];
 
+        //Toast.makeText(MapsActivity.this,String.valueOf(Mapostion.getLatitude()), Toast.LENGTH_LONG).show();
 
-        Toast.makeText(MapsActivity.this,String.valueOf(Mapostion.getLatitude()), Toast.LENGTH_LONG).show();
-
-
+         Location.distanceBetween(48.865868706795574,2.334295860180646,48.86579460103593,2.3336038502548035,results);
+        System.out.println("arr Said: " + Arrays.toString(results));
+       // Log.d("la distance",results[0]);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
