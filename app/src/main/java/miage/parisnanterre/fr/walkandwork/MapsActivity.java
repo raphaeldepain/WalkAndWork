@@ -4,6 +4,7 @@ import android.*;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -23,6 +24,7 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.CircleOptions;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -142,6 +144,14 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         Marker mCurrLocation = mGoogleMap.addMarker(markerOptions);
                        // GoogleMap googleMap;
                         mGoogleMap.animateCamera( CameraUpdateFactory.zoomTo( 12.0f ) );
+
+                        CircleOptions circleOptions = new CircleOptions()
+                                .center(new LatLng(locationResult.getLastLocation().getLatitude(),locationResult.getLastLocation().getLongitude()));
+                        circleOptions.radius(300); // In meters
+                        circleOptions.fillColor(0xff000000);
+                        mGoogleMap.addCircle(circleOptions);
+
+
 
                     }
                 };

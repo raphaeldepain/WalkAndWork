@@ -17,7 +17,7 @@ import java.io.IOException;
 public class InscriptionActivity extends AppCompatActivity {
 
     private EditText nom, email, phone;
-    private Button bouton;
+    private Button bouton, getUsersButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,9 +26,11 @@ public class InscriptionActivity extends AppCompatActivity {
 
         // recuperation des elements venant de la vue
 
-        nom = (EditText)findViewById(R.id.nom); email = (EditText)findViewById(R.id.email);
-
-        phone = (EditText)findViewById(R.id.phone); bouton = (Button)findViewById(R.id.bouton);
+        nom = (EditText)findViewById(R.id.nom);
+        email = (EditText)findViewById(R.id.email);
+        phone = (EditText)findViewById(R.id.phone);
+        bouton = (Button)findViewById(R.id.bouton);
+        getUsersButton=(Button)findViewById(R.id.boutonusers);
 
         // creation du listener sur l'objet bouton
 
@@ -41,6 +43,13 @@ public class InscriptionActivity extends AppCompatActivity {
 
                 new AddUser().execute("create",nom.getText().toString(),email.getText().toString(),phone.getText().toString());
 
+            }
+        });
+
+        getUsersButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               new GetUser().execute("read","2.2156175518589407","48.90462429309964");
             }
         });
     }
@@ -65,9 +74,14 @@ public class InscriptionActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(String result) {
 
-            if(result != null) Log.e("ERROR",result);
+            if(result != null){
+                Log.e("ERROR",result);
+            }
+                Toast.makeText(getApplicationContext(),"operation reussie "+result,Toast.LENGTH_LONG).show();
 
-            Toast.makeText(getApplicationContext(),"operation reussie "+result,Toast.LENGTH_LONG).show();
+
+
+
         }
 
         @Override
@@ -76,6 +90,28 @@ public class InscriptionActivity extends AppCompatActivity {
             // Things to be done before execution of long running operation. For
             // example showing ProgessDialog
 
+        }
+    }
+
+    private class GetUser extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpQuery httpQuery = new HttpQuery();
+
+            try {
+                return httpQuery.gettheUsers(params[0],params[1],params[2]);
+            } catch (IOException e) {
+                e.printStackTrace();
+                return null;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+            Toast.makeText(getApplicationContext(),"le msg est "+s,Toast.LENGTH_LONG).show();
+            Log.e("saiderreur",s);
         }
     }
 
