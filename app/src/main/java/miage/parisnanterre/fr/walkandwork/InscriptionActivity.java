@@ -12,7 +12,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.io.IOException;
+import java.util.Arrays;
 
 public class InscriptionActivity extends AppCompatActivity {
 
@@ -26,11 +31,11 @@ public class InscriptionActivity extends AppCompatActivity {
 
         // recuperation des elements venant de la vue
 
-        nom = (EditText)findViewById(R.id.nom);
-        email = (EditText)findViewById(R.id.email);
-        phone = (EditText)findViewById(R.id.phone);
-        bouton = (Button)findViewById(R.id.bouton);
-        getUsersButton=(Button)findViewById(R.id.boutonusers);
+        nom = (EditText) findViewById(R.id.nom);
+        email = (EditText) findViewById(R.id.email);
+        phone = (EditText) findViewById(R.id.phone);
+        bouton = (Button) findViewById(R.id.bouton);
+        getUsersButton = (Button) findViewById(R.id.boutonusers);
 
         // creation du listener sur l'objet bouton
 
@@ -41,7 +46,7 @@ public class InscriptionActivity extends AppCompatActivity {
 
                 // l'operation de communication doit se faire en arriere plan d'ou l'utilisation de l'asynctask
 
-                new AddUser().execute("create",nom.getText().toString(),email.getText().toString(),phone.getText().toString());
+                new AddUser().execute("create", nom.getText().toString(), email.getText().toString(), phone.getText().toString());
 
             }
         });
@@ -49,7 +54,9 @@ public class InscriptionActivity extends AppCompatActivity {
         getUsersButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-               new GetUser().execute("read","2.2156175518589407","48.90462429309964");
+                new GetUser().execute("closest", "2.2156175518589407", "48.90462429309964");
+                Toast.makeText(getApplicationContext(), "je suis affiché" , Toast.LENGTH_LONG).show();
+
             }
         });
     }
@@ -64,21 +71,27 @@ public class InscriptionActivity extends AppCompatActivity {
             HttpQuery httpQuery = new HttpQuery();
 
             try {
-                return httpQuery.Create(args[0],args[1],args[2],args[3]);
+                String result = httpQuery.Create(args[0], args[1], args[2], args[3]);
+
+                return result;
             } catch (IOException e) {
                 e.printStackTrace();
                 return null;
             }
         }
+
         // onPostExecute displays the results of the AsyncTask.
         @Override
         protected void onPostExecute(String result) {
 
-            if(result != null){
-                Log.e("ERROR",result);
+            if (result != null) {
+                Log.e("ERROR", result);
             }
-                Toast.makeText(getApplicationContext(),"operation reussie "+result,Toast.LENGTH_LONG).show();
-
+            if(result==null){
+                Toast.makeText(getApplicationContext(), "fail" , Toast.LENGTH_LONG).show();
+            }else{
+                Toast.makeText(getApplicationContext(), "succes" + result, Toast.LENGTH_LONG).show();
+            }
 
 
 
@@ -98,11 +111,15 @@ public class InscriptionActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(String... params) {
             HttpQuery httpQuery = new HttpQuery();
+            String r=null;
 
             try {
-                return httpQuery.gettheUsers(params[0],params[1],params[2]);
+                r=httpQuery.gettheUsers(params[0], params[1], params[2]);
+
+                return r;
             } catch (IOException e) {
                 e.printStackTrace();
+
                 return null;
             }
 
@@ -110,8 +127,33 @@ public class InscriptionActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(String s) {
-            Toast.makeText(getApplicationContext(),"le msg est "+s,Toast.LENGTH_LONG).show();
-            Log.e("saiderreur",s);
+
+
+            if (s==null) {
+                Toast.makeText(getApplicationContext(), "try again " , Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "succees "+s , Toast.LENGTH_LONG).show();
+                JSONObject obj = null;
+                try {
+                    obj = new JSONObject(s);
+                    JSONArray arr = obj.getJSONArray("result");
+                    // Log.d("this is my array", "arr: " + arr);
+                    for (int i = 0; i < arr.length(); i++)
+                    {
+                        String id = arr.getJSONObject(i).getString("id");
+                        double distance= arr.getJSONObject(i).getDouble("distance");
+
+                        Log.d("les identifiant",id);
+                        Log.d("distance", "value: " + distance);
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+
         }
     }
 

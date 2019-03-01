@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
@@ -29,6 +30,12 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Arrays;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
@@ -42,6 +49,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     final static int REQUEST_CODE_GPS_UPDATE_LOCATION=6;
     public Coordonnees Mapostion;
     private GoogleMap mGoogleMap;
+    public Marker mCurrLocation;
+
+    Marker[] marks;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +144,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     @Override
                     public void onLocationResult(LocationResult locationResult) {
                         publishLocation(locationResult.getLastLocation(), "Nb locs : "+locationResult.getLocations().size());
+
+                        if(mCurrLocation!=null){
+                            mCurrLocation.remove();
+                        }
+
                         LatLng latLng = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(latLng);
@@ -141,15 +156,13 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
 
                        // markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
-                        Marker mCurrLocation = mGoogleMap.addMarker(markerOptions);
+                         mCurrLocation = mGoogleMap.addMarker(markerOptions);
                        // GoogleMap googleMap;
                         mGoogleMap.animateCamera( CameraUpdateFactory.zoomTo( 12.0f ) );
+                        String a =  Double.toString(locationResult.getLastLocation().getLongitude());
+                        String b =  Double.toString(locationResult.getLastLocation().getLatitude());
 
-                        CircleOptions circleOptions = new CircleOptions()
-                                .center(new LatLng(locationResult.getLastLocation().getLatitude(),locationResult.getLastLocation().getLongitude()));
-                        circleOptions.radius(300); // In meters
-                        circleOptions.fillColor(0xff000000);
-                        mGoogleMap.addCircle(circleOptions);
+                         new GetUser().execute("closest",a,b);
 
 
 
@@ -235,6 +248,78 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
             }
         } else {
             Toast.makeText(MapsActivity.this, "Permission refusée.", Toast.LENGTH_LONG).show();
+        }
+    }
+
+
+    private class GetUser extends AsyncTask<String, Void, String> {
+
+        @Override
+        protected String doInBackground(String... params) {
+            HttpQuery httpQuery = new HttpQuery();
+            String r=null;
+
+            try {
+                r=httpQuery.gettheUsers(params[0], params[1], params[2]);
+
+                return r;
+            } catch (IOException e) {
+                e.printStackTrace();
+
+                return null;
+            }
+
+        }
+
+        @Override
+        protected void onPostExecute(String s) {
+
+
+            if (s==null) {
+                Toast.makeText(getApplicationContext(), "try again " , Toast.LENGTH_LONG).show();
+            } else {
+                Toast.makeText(getApplicationContext(), "succees "+s , Toast.LENGTH_LONG).show();
+                JSONObject obj = null;
+               /* if (marks!=null){
+                    for (int i=0;i<marks.length;i++){
+                        if (marks[i]!=null){
+                            marks[i].remove();
+                        }
+                    }
+                }*/
+
+
+                try {
+                    obj = new JSONObject(s);
+                    JSONArray arr = obj.getJSONArray("result");
+                    // Log.d("this is my array", "arr: " + arr);
+                    for (int i = 0; i < arr.length(); i++)
+                    {
+                        String id = arr.getJSONObject(i).getString("id");
+                        double distance= arr.getJSONObject(i).getDouble("distance");
+
+                        double latitude = arr.getJSONObject(i).getDouble("latitude");
+                        double longitude = arr.getJSONObject(i).getDouble("longitude");
+
+                        Log.d("les identifiant",id);
+                        Log.d("distance", "value: " + distance);
+
+                        LatLng latLng = new LatLng(latitude,longitude );
+                        MarkerOptions markerOptions = new MarkerOptions();
+                        markerOptions.position(latLng);
+                        markerOptions.title("identifiant: "+id+"distance: "+distance);
+                        mGoogleMap.addMarker(markerOptions);
+                        //marks[i]=mGoogleMap.addMarker(markerOptions);
+                    }
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+
+
+
         }
     }
 
