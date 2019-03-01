@@ -1,6 +1,7 @@
 package miage.parisnanterre.fr.walkandwork;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
@@ -43,6 +44,8 @@ public class InscriptionActivity extends AppCompatActivity {
                 // l'operation de communication doit se faire en arriere plan d'ou l'utilisation de l'asynctask
 
                 new AddUser().execute("create",nom.getText().toString(),email.getText().toString(),phone.getText().toString());
+                Intent toConnexion = new Intent(InscriptionActivity.this, Connexion.class);
+                startActivity(toConnexion);
 
             }
         });

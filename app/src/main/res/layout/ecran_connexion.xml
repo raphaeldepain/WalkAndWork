@@ -34,16 +34,18 @@ android:orientation="vertical" >
     android:ems="10"
     android:hint="mot de passe"
     android:inputType="textPassword" />
+
     <Button
-    android:id="@+id/bconnexion"
-    android:layout_width="fill_parent"
-    android:layout_height="30dp"
-    android:layout_gravity="center"
+        android:id="@+id/binscription"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-    android:textColor="@color/textcouleur"
-    android:background="@color/bocouleur"
-    android:text="connexion" />
+        android:background="@color/bocouleur"
+        android:text="Inscription"
+        android:textColor="@color/textcouleur" />
+
     <Button
         android:id="@+id/boffre"
         android:layout_width="fill_parent"
@@ -51,9 +53,9 @@ android:orientation="vertical" >
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"
-        android:textColor="@color/textcouleur"
         android:background="@color/bocouleur"
-        android:text="c'est quoi ce bordel les offre" />
+        android:text="Connexion"
+        android:textColor="@color/textcouleur" />
 
     <Button
         android:id="@+id/geolocation"

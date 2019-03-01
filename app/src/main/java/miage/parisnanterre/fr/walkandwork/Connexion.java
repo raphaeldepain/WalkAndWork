@@ -45,6 +45,7 @@ public class Connexion extends AppCompatActivity {
     private EditText email;
     private JSONObject json;
 
+
    // final static int REQUEST_CODE_GPS_LAST_LOCATION=4;
     //final static int REQUEST_CODE_GPS_GET_LOCATION=5;
     final static int REQUEST_CODE_GPS_UPDATE_LOCATION=6;
@@ -56,6 +57,8 @@ public class Connexion extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.ecran_connexion);
 
+
+        final Button inscription = (Button) findViewById(R.id.binscription);
         final Button connexion = (Button) findViewById(R.id.boffre);
          TextView tv =(TextView) findViewById(R.id.textSexe);
          Button buttonUpdateGps = findViewById(R.id.geolocation);
@@ -96,6 +99,17 @@ public class Connexion extends AppCompatActivity {
              //   startActivity(intent1);
             }
         });
+
+
+        inscription.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent toInscription = new Intent(Connexion.this, InscriptionActivity.class);
+                startActivity(toInscription);
+            }
+        });
+
+
 
         GPSLocationClient = LocationServices.getFusedLocationProviderClient(this);
         buttonUpdateGps.setOnClickListener(new View.OnClickListener() {
