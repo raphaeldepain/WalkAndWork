@@ -29,15 +29,16 @@ public class MainActivity extends AppCompatActivity {
 
     private List<String> imageNames = new ArrayList<>(); // La liste des titres des images
     private List<String> imageURL = new ArrayList<>(); // La liste des URL des images
-    private List<Employeur> employeur = new ArrayList<>(); // La liste d'employeur créés
+    //private List<Employeur> employeur = new ArrayList<>(); // La liste d'employeur créés
     private List<User> user = new ArrayList<>();
-    EmployeBDD employeurBdd = new EmployeBDD(this); // La création de la BDD interne au smartphone (SQLite)
+    UserBDD userBdd = new UserBDD(this); // La création de la BDD interne au smartphone (SQLite)
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
 
         Intent intent = getIntent();
         //id représente l'identifiant de l'utilisateur actuel
@@ -54,14 +55,13 @@ public class MainActivity extends AppCompatActivity {
             //On récupère tous les utilisateurs sur un Tableau de Json
             JSONArray jsonarray = new JSONArray(response);
 
-
-
+            //On récupère les données qu'on place dans une liste
             for(int i = 0; i< jsonarray.length()-1;i++){
                 JSONObject json = new JSONObject(jsonarray.getString(i));
                 user.add(new User(json.getString("nom"),json.getString("email"),Integer.parseInt(json.getString("id"))));
 
             }
-            Toast.makeText(getApplicationContext(),user.get(2).toString(),Toast.LENGTH_LONG).show();
+         //   Toast.makeText(getApplicationContext(),user.get(2).toString(),Toast.LENGTH_LONG).show();
 
         } catch (ExecutionException e) {
             e.printStackTrace();
@@ -74,18 +74,20 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-        employeur.add( new Employeur("DEPAIN","Raphael","SOCIETE GENERALE","Cherche jeune diplômé Miage"));
-        employeur.add( new Employeur("AMRANI","Said","AXA","Cherche jeune diplômé Info"));
-        employeur.add( new Employeur("ASLIMI","Soukaina","AIRFRANCE","Cherche jeune diplômé Miage"));
+       // employeur.add( new Employeur("DEPAIN","Raphael","SOCIETE GENERALE","Cherche jeune diplômé Miage"));
+       // employeur.add( new Employeur("AMRANI","Said","AXA","Cherche jeune diplômé Info"));
+       // employeur.add( new Employeur("ASLIMI","Soukaina","AIRFRANCE","Cherche jeune diplômé Miage"));
 
         //On ouvre la base de données pour écrire dedans
-        employeurBdd.open();
+        userBdd.open();
         //On insère dans la BDD les employeurs que l'on vient de créer
-        employeurBdd.insertEmployeur(employeur.get(0));
-        employeurBdd.insertEmployeur(employeur.get(1));
-        employeurBdd.insertEmployeur(employeur.get(2));
+        for(int i = 0;i<user.size();i++){
+            userBdd.insertUser(user.get(i));
+        }
+
+
         //On ferme la connexion à la BDD
-        employeurBdd.close();
+        userBdd.close();
         initImageBitmap();
         
     }
@@ -96,17 +98,15 @@ public class MainActivity extends AppCompatActivity {
      */
     public void initImageBitmap(){
         Log.d(TAG, "initImageBitmap: preparing bitmaps.");
-        employeurBdd.open();
-        imageURL.add("https://pbs.twimg.com/profile_images/707182241403822080/IKaXM_ps_400x400.jpg");
-        imageNames.add(employeurBdd.getEmployeurWithTitre("DEPAIN").getCompagny());
+        userBdd.open();
 
-        imageURL.add("https://is4-ssl.mzstatic.com/image/thumb/Purple128/v4/cc/99/0b/cc990b90-65ee-8924-b3ef-3552af684d76/AppIcon-0-1x_U007emarketing-0-0-GLES2_U002c0-512MB-sRGB-0-0-0-85-220-0-0-0-7.png/246x0w.jpg");
-        imageNames.add(employeurBdd.getEmployeurWithTitre("AMRANI").getCompagny());
+        for(int i = 0; i<user.size();i++){
+            imageURL.add("https://pbs.twimg.com/profile_images/707182241403822080/IKaXM_ps_400x400.jpg");
+         //   imageNames.add(userBdd.getUserWithId(Integer.toString(user.get(i).getId())).getEmail());
+            imageNames.add(user.get(i).getEmail());
+        }
 
-        imageURL.add("https://pbs.twimg.com/profile_images/1013705098663428096/HG670mrU.jpg");
-        imageNames.add(employeurBdd.getEmployeurWithTitre("ASLIMI").getCompagny());
-
-        employeurBdd.close();
+        userBdd.close();
         initRecyclerView();
     }
 

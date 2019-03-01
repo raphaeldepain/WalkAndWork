@@ -3,6 +3,9 @@ package miage.parisnanterre.fr.walkandwork;
 import android.support.annotation.NonNull;
 
 public class User {
+    public User() {
+    }
+
     private String name;
     private String email;
     private int id;
