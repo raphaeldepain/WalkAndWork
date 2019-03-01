@@ -62,4 +62,45 @@ public class HttpQuery {
             return response.body().string();
         }
     }
+
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public String Connexion(String url, String email) throws IOException {
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("action", url)
+                .addFormDataPart("email", email)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(ENDPOINT)
+                .post(requestBody)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    public String Read(String url, String id) throws IOException {
+
+        RequestBody requestBody = new MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("action", url)
+                .addFormDataPart("id", id)
+                .build();
+
+        Request request = new Request.Builder()
+                .url(ENDPOINT)
+                .post(requestBody)
+                .build();
+
+        try (Response response = client.newCall(request).execute()) {
+            return response.body().string();
+        }
+    }
+
+
 }

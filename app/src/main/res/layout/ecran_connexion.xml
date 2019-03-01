@@ -14,16 +14,16 @@ android:orientation="vertical" >
     android:textColor="@color/colorPrimaryDark"
     android:text="connexion" />
 
-<EditText
-    android:id="@+id/edittext1"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignLeft="@+id/button"
-    android:layout_below="@+id/textView1"
-    android:layout_marginTop="61dp"
-    android:ems="10"
-    android:hint="email"
-    android:inputType="text" />
+    <EditText
+        android:id="@+id/email"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView1"
+        android:layout_alignLeft="@+id/button"
+        android:layout_marginTop="61dp"
+        android:ems="10"
+        android:hint="email"
+        android:inputType="text" />
 <EditText
     android:id="@+id/edittext2"
     android:layout_width="fill_parent"
