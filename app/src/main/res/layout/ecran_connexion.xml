@@ -56,6 +56,16 @@ android:orientation="vertical" >
         android:background="@color/bocouleur"
         android:text="Connexion"
         android:textColor="@color/textcouleur" />
+    <Button
+        android:id="@+id/maps"
+        android:layout_width="fill_parent"
+        android:layout_height="30dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/bocouleur"
+        android:text="Maps"
+        android:textColor="@color/textcouleur" />
 
     <Button
         android:id="@+id/geolocation"

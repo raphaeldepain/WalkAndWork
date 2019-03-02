@@ -25,6 +25,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.Gson;
 
@@ -60,9 +61,19 @@ public class Connexion extends AppCompatActivity {
 
         final Button inscription = (Button) findViewById(R.id.binscription);
         final Button connexion = (Button) findViewById(R.id.boffre);
+        final Button mapsConnexion = (Button) findViewById(R.id.maps);
          TextView tv =(TextView) findViewById(R.id.textSexe);
          Button buttonUpdateGps = findViewById(R.id.geolocation);
          email = (EditText) findViewById(R.id.email);
+
+         mapsConnexion.setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View view) {
+                 Intent intent1 = new Intent(Connexion.this, MainActivity.class);
+                 startActivity(intent1);
+             }
+         });
+
 
         connexion.setOnClickListener(new View.OnClickListener() {
             @Override
