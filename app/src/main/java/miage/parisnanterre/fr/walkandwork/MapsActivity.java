@@ -148,6 +148,12 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         if(mCurrLocation!=null){
                             mCurrLocation.remove();
                         }
+                        // raphael voici la latitude et la longitude
+                        double Lat =locationResult.getLastLocation().getLatitude();
+                        double lng= locationResult.getLastLocation().getLongitude();
+                        // Tu peut ajouter la requète d'actualisation de la position ICI
+
+
 
                         LatLng latLng = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
                         MarkerOptions markerOptions = new MarkerOptions();
@@ -155,7 +161,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         markerOptions.title("Current Position");
 
 
-                       // markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+
                          mCurrLocation = mGoogleMap.addMarker(markerOptions);
                        // GoogleMap googleMap;
                         mGoogleMap.animateCamera( CameraUpdateFactory.zoomTo( 12.0f ) );
@@ -297,6 +303,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     {
                         String id = arr.getJSONObject(i).getString("id");
                         double distance= arr.getJSONObject(i).getDouble("distance");
+                        String nom =arr.getJSONObject(i).getString("nom");
 
                         double latitude = arr.getJSONObject(i).getDouble("latitude");
                         double longitude = arr.getJSONObject(i).getDouble("longitude");
@@ -307,7 +314,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         LatLng latLng = new LatLng(latitude,longitude );
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(latLng);
-                        markerOptions.title("identifiant: "+id+"distance: "+distance);
+                        markerOptions.title("Nom: "+nom+"    Distance: "+distance);
                         mGoogleMap.addMarker(markerOptions);
                         //marks[i]=mGoogleMap.addMarker(markerOptions);
                     }
