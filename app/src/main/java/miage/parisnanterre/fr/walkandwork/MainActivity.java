@@ -43,11 +43,11 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         //id représente l'identifiant de l'utilisateur actuel
         String id = intent.getStringExtra("id");
-       // Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
+        String isEmployeur = intent.getStringExtra("isEmployeur");
 
         //On veut récupérer les informations des gens personnes qui n'ont pas notre identifiant
         //On appelle la base de données avec une requête de connection, et un email
-        AsyncTask threadConnectio = new ReadUsers().execute("read",id);
+        AsyncTask threadConnectio = new ReadUsers().execute("read",id,isEmployeur);
         try {
             //On récupère l'identifiant de ce qui a été retourné par la base de données sous forme de String
             String response = (String) threadConnectio.get();

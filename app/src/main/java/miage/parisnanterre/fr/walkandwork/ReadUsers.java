@@ -21,7 +21,7 @@ class ReadUsers extends AsyncTask<String, Void, String> {
         HttpQuery httpQuery = new HttpQuery();
 
         try {
-            return httpQuery.Read(args[0],args[1]);
+            return httpQuery.Read(args[0],args[1],args[2]);
         } catch (IOException e) {
             e.printStackTrace();
             return null;

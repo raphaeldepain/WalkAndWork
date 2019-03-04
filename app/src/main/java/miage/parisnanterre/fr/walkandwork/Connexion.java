@@ -69,7 +69,7 @@ public class Connexion extends AppCompatActivity {
          mapsConnexion.setOnClickListener(new View.OnClickListener() {
              @Override
              public void onClick(View view) {
-                 Intent intent1 = new Intent(Connexion.this, MainActivity.class);
+                 Intent intent1 = new Intent(Connexion.this, MapsActivity.class);
                  startActivity(intent1);
              }
          });
@@ -90,10 +90,12 @@ public class Connexion extends AppCompatActivity {
                     json = new JSONObject(response);
                     //On récupère la donnée d'identifiant id
                     String id = json.getString("id");
+                    String type = json.getString("isEmployeur");
 
                   //  Toast.makeText(getApplicationContext(),id,Toast.LENGTH_LONG).show();
                     Intent intentToMain = new Intent(Connexion.this, MainActivity.class);
                     intentToMain.putExtra("id",id);
+                    intentToMain.putExtra("isEmployeur",type);
                     startActivity(intentToMain);
 
                 } catch (ExecutionException e) {

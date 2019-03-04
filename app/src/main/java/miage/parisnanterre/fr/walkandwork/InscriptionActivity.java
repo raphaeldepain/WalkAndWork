@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.Toast;
 
 import org.json.JSONArray;
@@ -21,7 +22,7 @@ import java.util.Arrays;
 
 public class InscriptionActivity extends AppCompatActivity {
 
-    private EditText nom, email, phone;
+    private EditText nom, email, phone, data;
     private Button bouton, getUsersButton;
 
     @Override
@@ -34,8 +35,11 @@ public class InscriptionActivity extends AppCompatActivity {
         nom = (EditText) findViewById(R.id.nom);
         email = (EditText) findViewById(R.id.email);
         phone = (EditText) findViewById(R.id.phone);
+        data = (EditText) findViewById(R.id.data);
+        final RadioButton employeur = (RadioButton) findViewById(R.id.employeur);
+        final RadioButton chomeur = (RadioButton) findViewById(R.id.chomeur);
         bouton = (Button) findViewById(R.id.bouton);
-        getUsersButton = (Button) findViewById(R.id.boutonusers);
+
 
         // creation du listener sur l'objet bouton
 
@@ -44,21 +48,22 @@ public class InscriptionActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+               String competence = data.getText().toString().toUpperCase();
+
                 // l'operation de communication doit se faire en arriere plan d'ou l'utilisation de l'asynctask
 
-                new AddUser().execute("create", nom.getText().toString(), email.getText().toString(), phone.getText().toString());
+                if(employeur.isChecked()){
+                    new AddUser().execute("create", nom.getText().toString(), email.getText().toString(), phone.getText().toString(), competence, "1");
+                }
+                if(chomeur.isChecked()){
+                    new AddUser().execute("create", nom.getText().toString(), email.getText().toString(), phone.getText().toString(), competence, "0");
+                }
+
+
 
             }
         });
 
-        getUsersButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                new GetUser().execute("closest", "2.2156175518589407", "48.90462429309964");
-                Toast.makeText(getApplicationContext(), "je suis affiché" , Toast.LENGTH_LONG).show();
-
-            }
-        });
     }
 
     // Asynctask destine a l'operation d'arriere plan
@@ -71,7 +76,7 @@ public class InscriptionActivity extends AppCompatActivity {
             HttpQuery httpQuery = new HttpQuery();
 
             try {
-                String result = httpQuery.Create(args[0], args[1], args[2], args[3]);
+                String result = httpQuery.Create(args[0], args[1], args[2], args[3], args[4], args[5]);
 
                 return result;
             } catch (IOException e) {
@@ -130,9 +135,9 @@ public class InscriptionActivity extends AppCompatActivity {
 
 
             if (s==null) {
-                Toast.makeText(getApplicationContext(), "try again " , Toast.LENGTH_LONG).show();
+                //Toast.makeText(getApplicationContext(), "try again " , Toast.LENGTH_LONG).show();
             } else {
-                Toast.makeText(getApplicationContext(), "succees "+s , Toast.LENGTH_LONG).show();
+               // Toast.makeText(getApplicationContext(), "succees "+s , Toast.LENGTH_LONG).show();
                 JSONObject obj = null;
                 try {
                     obj = new JSONObject(s);

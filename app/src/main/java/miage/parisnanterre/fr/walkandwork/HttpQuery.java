@@ -23,7 +23,7 @@ public class HttpQuery {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public String Create(String url, String nom, String email, String phone) throws IOException {
+    public String Create(String url, String nom, String email, String phone, String data, String type) throws IOException {
 
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -31,6 +31,8 @@ public class HttpQuery {
                 .addFormDataPart("nom", nom)
                 .addFormDataPart("email", email)
                 .addFormDataPart("phone", phone)
+                .addFormDataPart("data", data)
+                .addFormDataPart("type", type)
                 .build();
 
         Request request = new Request.Builder()
@@ -85,12 +87,13 @@ public class HttpQuery {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public String Read(String url, String id) throws IOException {
+    public String Read(String url, String id, String isEmployeur) throws IOException {
 
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("action", url)
                 .addFormDataPart("id", id)
+                .addFormDataPart("isEmployeur", isEmployeur)
                 .build();
 
         Request request = new Request.Builder()
