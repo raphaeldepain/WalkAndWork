@@ -3,6 +3,7 @@ package miage.parisnanterre.fr.walkandwork;
 import android.*;
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -50,6 +51,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     public Coordonnees Mapostion;
     private GoogleMap mGoogleMap;
     public Marker mCurrLocation;
+    public String idUser;
 
     Marker[] marks;
 
@@ -57,6 +59,11 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_maps);
+
+        Intent intent = getIntent();
+        final String id = intent.getStringExtra("id");
+        idUser = id;
+
         Mapostion = new Coordonnees(30,30);
 
         GPSLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -64,7 +71,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         float[] results = new float[3];
 
-        //Toast.makeText(MapsActivity.this,String.valueOf(Mapostion.getLatitude()), Toast.LENGTH_LONG).show();
+        Toast.makeText(MapsActivity.this,GPSLocationClient.toString(), Toast.LENGTH_LONG).show();
 
          Location.distanceBetween(48.865868706795574,2.334295860180646,48.86579460103593,2.3336038502548035,results);
         System.out.println("arr Said: " + Arrays.toString(results));
@@ -152,6 +159,8 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         double Lat =locationResult.getLastLocation().getLatitude();
                         double lng= locationResult.getLastLocation().getLongitude();
                         // Tu peut ajouter la requète d'actualisation de la position ICI
+                        new UpdatePosition().execute("updatePostion",idUser,Double.toString(lng),Double.toString(Lat));
+
 
 
 

@@ -24,16 +24,6 @@ android:orientation="vertical" >
         android:ems="10"
         android:hint="email"
         android:inputType="text" />
-<EditText
-    android:id="@+id/edittext2"
-    android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
-    android:layout_alignLeft="@+id/button"
-    android:layout_below="@+id/textView1"
-    android:layout_marginTop="61dp"
-    android:ems="10"
-    android:hint="mot de passe"
-    android:inputType="textPassword" />
 
     <Button
         android:id="@+id/binscription"
@@ -56,25 +46,5 @@ android:orientation="vertical" >
         android:background="@color/bocouleur"
         android:text="Connexion"
         android:textColor="@color/textcouleur" />
-    <Button
-        android:id="@+id/maps"
-        android:layout_width="fill_parent"
-        android:layout_height="30dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:background="@color/bocouleur"
-        android:text="Maps"
-        android:textColor="@color/textcouleur" />
 
-    <Button
-        android:id="@+id/geolocation"
-        android:layout_width="fill_parent"
-        android:layout_height="30dp"
-        android:layout_gravity="center"
-        android:layout_marginTop="10dp"
-        android:layout_marginBottom="10dp"
-        android:textColor="@color/textcouleur"
-        android:background="@color/bocouleur"
-        android:text="recuperer ma geolocation" />
 </LinearLayout>

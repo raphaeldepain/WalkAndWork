@@ -11,7 +11,45 @@ public class User {
     private int id;
     private double longitude;
     private double latitude;
-    private boolean isEmployeur = false;
+    private String data;
+
+    public String getData() {
+        return data;
+    }
+
+    public User(String name, String email, int id, String data) {
+        this.name = name;
+        this.email = email;
+        this.id = id;
+        this.data = data;
+    }
+
+    @NonNull
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", id=" + id +
+                ", longitude=" + longitude +
+                ", latitude=" + latitude +
+                ", data='" + data + '\'' +
+                '}';
+    }
+
+    public void setData(String data) {
+        this.data = data;
+    }
+
+    public User(String name, String email, int id, double longitude, double latitude, String data) {
+        this.name = name;
+        this.email = email;
+        this.id = id;
+        this.longitude = longitude;
+        this.latitude = latitude;
+        this.data = data;
+    }
 
     public User(String name, String email, int id) {
         this.name = name;
@@ -59,15 +97,4 @@ public class User {
         this.latitude = latitude;
     }
 
-    @NonNull
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", id=" + id +
-                ", longitude=" + longitude +
-                ", latitude=" + latitude +
-                '}';
-    }
 }
