@@ -12,6 +12,13 @@ android:
 
 sudo: required
 
+addons:
+  sonarcloud:
+    organization: "Walkandwork"
+    token:
+      secure: "d821ed7e7987c723b8f9ac26cbcff3afa79cd567"
+
+
 jdk:
   - oraclejdk8
 
@@ -22,3 +29,4 @@ before_script:
 
 script:
  - chmod +x ./gradlew
+ - ./gradlew sonarqube
