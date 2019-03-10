@@ -16,7 +16,7 @@ addons:
   sonarcloud:
     organization: "Walkandwork"
     token:
-      secure: "d821ed7e7987c723b8f9ac26cbcff3afa79cd567"
+      secure: "J4wevmORpAJBMUv3QVR8wpSAqquw+OmSS0vFFtEMACSBkiI2Tp+BmOd6UuOrmDs13M9QdNk+WoFflDdzEYeJ95R3S88X5Xp+dYIALbChZdFFHLjJw7rwGEc9upiwiYqlgjfJ7X8hllBLG6LgeeYggkIw0GGVhHVsPUpPFD2I9WG/c00Bw6Z4Fw5exQPldVk/adoUWX9tHsuqqtsthdGeXhCf8A1zF8RcEA1sA15+d1TMb0Aj2wQ45k5oM6FZqI62A6OlNj87NbtJrmMaeeIGWncK0hLd3hi0Y8aGmwekExdoe44m+/tRJEBL7nz5inVmdo8Qgzo6dXDGDEKmqZGK0fRT4sShm0rS6IrY3DRuipROCFrdtiTSYABJLKWQunH/dLq/KDUnbVqdLJDcqMAR9/vtmA0Ke/J2Wr9zV3o1h6CMUy9GB2Yq/bAXIwNTqps7Z2xdX2D/SUK7WH2HGUHpJcXxATCDo9KL9+59lZ++xjb1nnCndzcvgqwKpCOEPoOQJwxWkjnnrcdeI4Nd3ajKENzDEbIhRqq1KpG5yqEo4SRDByr0CnlrqsIcv+gtPT/y2nqbAO5ZH1HyzjQV8YtQvDW0L/BpL9Q2oUFeEyXvI6O9/bMDoDChR+1F/CeO8Nk0bDFPGDt9OiNoMHY5BiZ2/ClAxLvTNJaf+Ty/UFLvwhQ="
 
 
 jdk:
