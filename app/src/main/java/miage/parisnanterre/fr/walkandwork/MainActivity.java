@@ -11,13 +11,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.gson.JsonParser;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -27,7 +24,6 @@ import java.util.LinkedHashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.TreeMap;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -40,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
 
     private List<String> imageNames = new ArrayList<>(); // La liste des titres des images
     private List<String> imageURL = new ArrayList<>(); // La liste des URL des images
-    //private List<Employeur> employeur = new ArrayList<>(); // La liste d'employeur créés
+
     private List<User> user = new ArrayList<>();
     private List<User> userFinal = new ArrayList<>();
     private Map<User,Integer> userToDecrease = new HashMap<>();
@@ -79,34 +75,8 @@ public class MainActivity extends AppCompatActivity {
                 user.add(new User(json.getString("nom"),json.getString("email"),Integer.parseInt(json.getString("id")),json.getString("data")));
 
             }
-
-            int[] userActualise = new int[user.size()];
-            Log.d("MainActivity", Integer.toString(userActualise.length));
-            String[] nosCompetences = nosCompetence.split(",");
-            for(int i =0;i<user.size();i++){
-                for(int j=0; j < nosCompetences.length; j++){
-                   if(Arrays.asList(user.get(i).getData().split(",")).contains( nosCompetences[j])){
-                       userActualise[i] += 1;
-                       Log.d("MainActivityUOA",Integer.toString(userActualise[i]));
-                   }
-                }
-            }
-            Log.d("TABTAILLE",Integer.toString(userActualise.length));
-            Log.d("LISTTAILLE",Integer.toString(user.size()));
-            for(int g = 0;g<user.size();g++){
-                userToDecrease.put(user.get(g),userActualise[g]);
-
-            }
-
-            userToDecrease = triAvecValeur((HashMap<User, Integer>) userToDecrease);
-            Log.d("HASHTAILLE",Integer.toString(userToDecrease.size()));
-
-            for (HashMap.Entry<User, Integer> entry : userToDecrease.entrySet())
-            {
-               userFinal.add(entry.getKey());
-              //  entry.getValue();
-            }
-
+            //On les classes
+            userFinal = classerUserPreference(nosCompetence);
 
 
 
@@ -192,5 +162,37 @@ public class MainActivity extends AppCompatActivity {
         RecyclerViewEmployeurAdapter adapter = new RecyclerViewEmployeurAdapter(imageNames,imageURL,this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    public List<User> classerUserPreference(String nosCompetence){
+        int[] userActualise = new int[user.size()];
+        Log.d("MainActivity", Integer.toString(userActualise.length));
+        String[] nosCompetences = nosCompetence.split(",");
+        for(int i =0;i<user.size();i++){
+            for(int j=0; j < nosCompetences.length; j++){
+                if(Arrays.asList(user.get(i).getData().split(",")).contains( nosCompetences[j])){
+                    userActualise[i] += 1;
+                    Log.d("MainActivityUOA",Integer.toString(userActualise[i]));
+                }
+            }
+        }
+        Log.d("TABTAILLE",Integer.toString(userActualise.length));
+        Log.d("LISTTAILLE",Integer.toString(user.size()));
+        for(int g = 0;g<user.size();g++){
+            userToDecrease.put(user.get(g),userActualise[g]);
+
+        }
+
+        userToDecrease = triAvecValeur((HashMap<User, Integer>) userToDecrease);
+        Log.d("HASHTAILLE",Integer.toString(userToDecrease.size()));
+
+        for (HashMap.Entry<User, Integer> entry : userToDecrease.entrySet())
+        {
+            userFinal.add(entry.getKey());
+            //  entry.getValue();
+        }
+
+        return userFinal;
+
     }
 }

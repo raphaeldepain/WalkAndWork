@@ -159,7 +159,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         double Lat =locationResult.getLastLocation().getLatitude();
                         double lng= locationResult.getLastLocation().getLongitude();
                         // Tu peut ajouter la requète d'actualisation de la position ICI
-                        new UpdatePosition().execute("updatePostion",idUser,Double.toString(lng),Double.toString(Lat));
+                        new UpdatePosition().execute("updatePosition",idUser,Double.toString(lng),Double.toString(Lat));
 
 
 

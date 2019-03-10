@@ -68,7 +68,7 @@ public class InscriptionActivity extends AppCompatActivity {
 
     // Asynctask destine a l'operation d'arriere plan
 
-    private class AddUser extends AsyncTask<String, Void, String> {
+    protected class AddUser extends AsyncTask<String, Void, String> {
         @TargetApi(Build.VERSION_CODES.KITKAT)
         @Override
         protected String doInBackground(String... args) {
