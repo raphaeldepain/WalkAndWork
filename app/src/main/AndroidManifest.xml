@@ -36,10 +36,6 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyATRB6WWUSLbF6XuvNruYZtJW-86qvQAcQ" />
 
-        <activity
-            android:name=".MapsActivity"
-            android:label="@string/title_activity_maps" />
-
     </application>
 
 </manifest>
