@@ -66,7 +66,7 @@ Depuis Android studio :
 
 
 #### Builder l'apk
-cd ./MyBench
+cd ./WalkAndWork
 ./gradlew
 ou sur windows :
 ./gradlew.bat
