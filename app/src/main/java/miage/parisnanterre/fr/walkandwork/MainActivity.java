@@ -1,6 +1,7 @@
 package miage.parisnanterre.fr.walkandwork;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -15,6 +16,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.Serializable;
+import java.util.AbstractList;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -26,6 +29,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
+import maes.tech.intentanim.CustomIntent;
+
 /**
  * Activité principale
  * Il s'agit de l'activité qui affiche la liste d'employeur en faisant appelle à une BDD.
@@ -36,13 +41,15 @@ public class MainActivity extends AppCompatActivity {
 
     private List<String> imageNames = new ArrayList<>(); // La liste des titres des images
     private List<String> imageURL = new ArrayList<>(); // La liste des URL des images
-
+    private List<String> idUsersMaps = new ArrayList<String>(); // La liste des utilisateurs présents sur maps
     private List<User> user = new ArrayList<>();
     private List<User> userFinal = new ArrayList<>();
     private Map<User,Integer> userToDecrease = new HashMap<>();
 
     List<User>sortedUser;
     UserBDD userBdd = new UserBDD(this); // La création de la BDD interne au smartphone (SQLite)
+    private List<String> phones = new ArrayList<>();
+    private List<String> data = new ArrayList<>();
 
 
     @Override
@@ -68,12 +75,17 @@ public class MainActivity extends AppCompatActivity {
 
             //On récupère tous les utilisateurs sur un Tableau de Json
             JSONArray jsonarray = new JSONArray(response);
+           // Toast.makeText(getApplicationContext(),jsonarray.toString(),Toast.LENGTH_LONG).show();
 
             //On récupère les données qu'on place dans une liste
             for(int i = 0; i< jsonarray.length()-1;i++){
                 JSONObject json = new JSONObject(jsonarray.getString(i));
-                user.add(new User(json.getString("nom"),json.getString("email"),Integer.parseInt(json.getString("id")),json.getString("data")));
 
+                if(!(json.getString("data").isEmpty())){
+                    idUsersMaps.add(json.getString("id"));
+                    user.add(new User(json.getString("nom"),json.getString("email"),Integer.parseInt(json.getString("id")),json.getString("phone"),json.getString("data")));
+                    Log.d("TETETE", user.get(i).getPhone());
+                    }
             }
             //On les classes
             userFinal = classerUserPreference(nosCompetence);
@@ -100,7 +112,9 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent toMap = new Intent(MainActivity.this,MapsActivity.class);
                 toMap.putExtra("id",id);
+                toMap.putExtra("users", (Serializable) idUsersMaps);
                 startActivity(toMap);
+                CustomIntent.customType(MainActivity.this, "bottom-to-up");
             }
         });
 
@@ -145,6 +159,9 @@ public class MainActivity extends AppCompatActivity {
         for(int i = userFinal.size()-1; i>=0 ;i--){
             imageURL.add("data:image/jpeg;base64,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");
             imageNames.add(userFinal.get(i).getName());
+            Log.d(TAG, userFinal.get(i).getPhone());
+            phones.add(userFinal.get(i).getPhone());
+            data.add(userFinal.get(i).getData());
         }
 
 
@@ -159,7 +176,7 @@ public class MainActivity extends AppCompatActivity {
     private void initRecyclerView(){
         Log.d(TAG, "initRecyclerView: init recyclerview.");
         RecyclerView recyclerView = findViewById(R.id.recyclerViewEmployeur);
-        RecyclerViewEmployeurAdapter adapter = new RecyclerViewEmployeurAdapter(imageNames,imageURL,this);
+        RecyclerViewEmployeurAdapter adapter = new RecyclerViewEmployeurAdapter(imageNames,imageURL,phones,data,this);
         recyclerView.setAdapter(adapter);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
     }
@@ -188,11 +205,14 @@ public class MainActivity extends AppCompatActivity {
 
         for (HashMap.Entry<User, Integer> entry : userToDecrease.entrySet())
         {
-            userFinal.add(entry.getKey());
+            if(entry.getValue()>0) {
+                userFinal.add(entry.getKey());
+            }
             //  entry.getValue();
         }
 
         return userFinal;
 
     }
+
 }

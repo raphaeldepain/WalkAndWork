@@ -38,6 +38,7 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class MapsActivity extends FragmentActivity implements OnMapReadyCallback {
 
@@ -62,6 +63,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
 
         Intent intent = getIntent();
         final String id = intent.getStringExtra("id");
+        final List<String> idUsers = intent.getStringArrayListExtra("users");
         idUser = id;
 
         Mapostion = new Coordonnees(30,30);
@@ -167,7 +169,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                         LatLng latLng = new LatLng(locationResult.getLastLocation().getLatitude(), locationResult.getLastLocation().getLongitude());
                         MarkerOptions markerOptions = new MarkerOptions();
                         markerOptions.position(latLng);
-                        markerOptions.title("Current Position");
+                        markerOptions.title("Vous êtes ici");
 
 
 
@@ -311,20 +313,22 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
                     for (int i = 0; i < arr.length(); i++)
                     {
                         String id = arr.getJSONObject(i).getString("id");
-                        double distance= arr.getJSONObject(i).getDouble("distance");
-                        String nom =arr.getJSONObject(i).getString("nom");
+                        if(idUser.contains(id)) {
+                            double distance = arr.getJSONObject(i).getDouble("distance");
+                            String nom = arr.getJSONObject(i).getString("nom");
 
-                        double latitude = arr.getJSONObject(i).getDouble("latitude");
-                        double longitude = arr.getJSONObject(i).getDouble("longitude");
+                            double latitude = arr.getJSONObject(i).getDouble("latitude");
+                            double longitude = arr.getJSONObject(i).getDouble("longitude");
 
-                        Log.d("les identifiant",id);
-                        Log.d("distance", "value: " + distance);
+                            Log.d("les identifiants", id);
+                            Log.d("distance", "value: " + distance);
 
-                        LatLng latLng = new LatLng(latitude,longitude );
-                        MarkerOptions markerOptions = new MarkerOptions();
-                        markerOptions.position(latLng);
-                        markerOptions.title("Nom: "+nom+"    Distance: "+distance);
-                        mGoogleMap.addMarker(markerOptions);
+                            LatLng latLng = new LatLng(latitude, longitude);
+                            MarkerOptions markerOptions = new MarkerOptions();
+                            markerOptions.position(latLng);
+                            markerOptions.title("Nom: " + nom + "    Distance: " + distance);
+                            mGoogleMap.addMarker(markerOptions);
+                        }
                         //marks[i]=mGoogleMap.addMarker(markerOptions);
                     }
 

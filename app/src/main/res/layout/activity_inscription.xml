@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:padding="10dp"
+    android:background="#ABEBC6"
     tools:context=".InscriptionActivity">
 
     <TextView
@@ -23,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_margin="5dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/rounded_border"
         android:padding="5dp" />
 
     <TextView
@@ -42,7 +43,7 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_margin="5dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/rounded_border"
         android:padding="5dp" />
 
     <TextView
@@ -61,7 +62,7 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_margin="5dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/rounded_border"
         android:inputType="phone"
         android:padding="5dp" />
 
@@ -81,7 +82,7 @@
         android:layout_width="match_parent"
         android:layout_height="35dp"
         android:layout_margin="5dp"
-        android:background="#FFFFFF"
+        android:background="@drawable/rounded_border"
         android:padding="5dp" />
 
     <TextView
@@ -122,6 +123,8 @@
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
         android:padding="10dp"
+        android:background="@color/bocouleur"
+        android:textColor="@color/textcouleur"
         android:text="ENREGISTRER LES MODIFICATIONS" />
 
 

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#ABEBC6"
+    tools:context=".SplashScreen">
+
+    <FrameLayout
+        android:layout_marginTop="50dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="254dp"
+            android:layout_gravity="center"
+            android:padding="6dp"
+            android:src="@drawable/logo" />
+
+        <ImageView
+            android:layout_width="271dp"
+            android:layout_height="254dp"
+            android:layout_gravity="center"
+            android:src="@drawable/frame" />
+
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="91dp"
+        android:layout_marginBottom="98dp"
+        android:text="Trouver un travail en traversant la rue !" />
+
+</RelativeLayout>
