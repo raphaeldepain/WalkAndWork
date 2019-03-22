@@ -50,7 +50,7 @@ Depuis la fenêtres de bienvenue :
 
 - Télécharger et installer Git : [Télécharger Git] (https://gitforwindows.org/)
 
-### Cloner MyBench
+### Cloner WalkAndWork
 
 Une fois Git installé, il suffit de suivre les instructions ci-dessous.
 
